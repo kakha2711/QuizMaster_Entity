@@ -209,14 +209,14 @@ namespace QuizMaster.InfroStructure.Data
             modelBuilder.Entity<Student>()
                 .ToTable(s => s.HasCheckConstraint
                         ("CHK_Student_FirsName",
-                        "[FirsName] NOT LIKE '%[^a-zA-Z]%' or [FirsName] NOT LIKE '%[^ა-ჰ]%'"))
+                        "[FirsName] NOT LIKE '%[^a-zA-Z]%' or [FirsName] NOT LIKE N'%[^ა-ჰ]%'"))
                 .Property(s=>s.FirsName)
                 .IsRequired()
                 .HasColumnType("nvarchar(50)");
             modelBuilder.Entity<Student>()
                 .ToTable(s => s.HasCheckConstraint
                         ("CHK_Student_Lastname",
-                        "[Lastname] NOT LIKE '%[^a-zA-Z]%' or [Lastname] NOT LIKE '%[^ა-ჰ]%'"))
+                        "[Lastname] NOT LIKE '%[^a-zA-Z]%' or [Lastname] NOT LIKE N'%[^ა-ჰ]%'"))
                 .Property(s => s.Lastname)
                 .IsRequired()
                 .HasColumnType("nvarchar(100)");
@@ -296,14 +296,14 @@ namespace QuizMaster.InfroStructure.Data
             modelBuilder.Entity<Lecturer>()
                 .ToTable(s => s.HasCheckConstraint
                         ("CHK_Lecturer_FirsName",
-                        "[FirsName] NOT LIKE '%[^A-Za-z]%' or [FirsName] NOT LIKE '%[^ა-ჰ]%'"))
+                        "[FirsName] NOT LIKE '%[^A-Za-z]%' or [FirsName] NOT LIKE N'%[^ა-ჰ]%'"))
                 .Property(s => s.FirsName)
                 .IsRequired()
                 .HasColumnType("nvarchar(50)");
             modelBuilder.Entity<Lecturer>()
                 .ToTable(s => s.HasCheckConstraint
                         ("CHK_Lecturer_Lastname",
-                        "[Lastname] NOT LIKE '%[^A-Za-z]%' or [Lastname] NOT LIKE '%[^ა-ჰ]%'"))
+                        "[Lastname] NOT LIKE '%[^A-Za-z]%' or [Lastname] NOT LIKE N'%[^ა-ჰ]%'"))
                 .Property(s => s.Lastname)
                 .IsRequired()
                 .HasColumnType("nvarchar(100)");

@@ -2,5 +2,6 @@
   <Project Path="QuizMaster.Domane/QuizMaster.Domane.csproj" />
   <Project Path="QuizMaster.InfroStructure/QuizMaster.InfroStructure.csproj" />
   <Project Path="QuizMaster.Service/QuizMaster.Service.csproj" />
+  <Project Path="QuizMaster.Test/QuizMaster.Test.csproj" Id="4143ba4a-e194-47a3-b13e-daf79625688f" />
   <Project Path="QuizMaster/QuizMaster.UI.csproj" />
 </Solution>

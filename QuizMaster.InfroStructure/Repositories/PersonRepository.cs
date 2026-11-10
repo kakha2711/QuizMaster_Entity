@@ -14,44 +14,89 @@ namespace QuizMaster.InfroStructure.Repositories
             _quiziMasterDb = quizMasterDb;
         }
 
-        public Task<List<Person>> GetAllStudent(string role)
+
+
+        public async Task<List<T>> GetAllPerson<T>() where T : Person
         {
-            List<Student> students = new List<Student>();
-            List<Lecturer> lecturers = new List<Lecturer>();
+            if (typeof(T) == typeof(Lecturer))
+            {
+                return _quiziMasterDb.Lecturers.Cast<T>().ToList();
+            }
 
+            if (typeof(T) == typeof(Student))
+            {
+                return _quiziMasterDb.Students.Cast<T>().ToList();
+            }
 
-            if (role == "Leqturer")
-                lecturers = _quiziMasterDb.Lecturers.ToList();
-            else
-                students = _quiziMasterDb.Students.ToList();
-
-
-            return lecturers;
+            return default;
         }
 
-        public Person GetPersonByPersonalNumber(string personalNumber, string role)
+
+
+        public async Task<T> GetPersonByPersonalNumber<T>(string personalNumber ) where T : Person
         {
-            throw new NotImplementedException();
+            return GetAllPerson<Person>().Result.Cast<T>().FirstOrDefault(p => p.PersonalNumber == personalNumber);
         }
 
-        public Task<Person> GetPersonByUserName(string username, string role)
+        public async Task<T> GetPersonByUserName<T>(string username) where T : Person
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(GetAllPerson<T>().Result.Cast<T>().FirstOrDefault(p => p.UserName == username));
         }
 
-        public Task<string> AddStudent(Person person, int param = 0)
+        public async Task<string> AddStudent<T>(T person) where T : Person
         {
-            throw new NotImplementedException();
+            string errorMessage = string.Empty;
+
+            if (person is Student student)
+            {
+                var tt = _quiziMasterDb.Students.Add(student);
+            }
+            else if (person is Lecturer lecturer)
+            {
+                try
+                {
+                    _quiziMasterDb.Lecturers.Add(lecturer);
+                }
+                catch (Exception ex)
+                {
+                    var tt = ex.Message;
+                }
+            }
+
+            return "Student added successfully";
         }
 
-        public Task<string> UpdateStudent(Person student)
+        public async Task<string> UpdatePerson<T>(T person) where T : Person
         {
-            throw new NotImplementedException();
+
+            if(person is Student student)
+            {
+                _quiziMasterDb.Students.Update(student);
+            }
+            else if (person is Lecturer lecturer)
+            {
+                _quiziMasterDb.Lecturers.Update(lecturer);
+            }
+
+            return "Person updated successfully";
         }
 
-        public Task<string> DeleteStudent(string personalNumber)
+        public async Task<string> DeletePerson<T>(T person) where T : Person
         {
-            throw new NotImplementedException();
+            if(person is Student student)
+            {
+                person.IsDelete = true;
+                UpdatePerson(person);
+            }
+            else if (person is Lecturer lecturer)
+            {
+                person.IsDelete = true;
+                UpdatePerson(person);
+            }
+
+            return "Person deleted successfully";
         }
+
+      
     }
 }

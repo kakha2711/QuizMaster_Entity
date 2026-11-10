@@ -5,11 +5,11 @@ namespace QuizMaster.Domane.Interface
 {
     public interface IPersonRepository
     {
-        Task<List<Person>> GetAllStudent(string role);
-        public Person GetPersonByPersonalNumber(string personalNumber, string role);
-        public Task<Person> GetPersonByUserName(string username, string role);
-        public Task<string> AddStudent(Person person, int param = 0);
-        public Task<string> UpdateStudent(Person student);
-        public Task<string> DeleteStudent(string personalNumber);
+        public Task<List<T>> GetAllPerson<T>() where T : Person;
+        public Task<T> GetPersonByPersonalNumber<T>(string personalNumber) where T : Person;
+        public Task<T> GetPersonByUserName<T>(string username) where T : Person;
+        public Task<string> AddStudent<T>(T person) where T : Person;
+        public Task<string> UpdatePerson<T>(T student) where T : Person;
+        public Task<string> DeletePerson<T>(T person) where T : Person;
     }
 }

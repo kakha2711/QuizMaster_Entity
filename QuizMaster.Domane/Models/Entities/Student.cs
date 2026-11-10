@@ -4,6 +4,8 @@ namespace QuizMaster.Domane.Models.Entities
 {
     public class Student : Person
     {
+       
+
         public double Grade { get; set; }
 
         public ICollection<StudentTestResult> StudentTestResults { get; set; }
@@ -20,3 +22,5 @@ namespace QuizMaster.Domane.Models.Entities
         }
     }
 }
+
+

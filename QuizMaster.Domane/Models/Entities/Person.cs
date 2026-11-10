@@ -1,13 +1,13 @@
 ﻿
 using FluentValidation;
 using QuizMaster.Domane.Enum;
-using System.Data;
-using System.Reflection;
 
 namespace QuizMaster.Domane.Models.Entities
 {
     public class Person
     {
+        
+
         public int Id { get; set; }
 
         public string? FirsName { get; set; }
@@ -65,3 +65,39 @@ namespace QuizMaster.Domane.Models.Entities
         }
     }
 }
+
+
+
+
+//using System.Data;
+//using System.Reflection;
+//public Person(
+//                int id,
+//                string? firsName,
+//                string? lastname,
+//                string? email,
+//                string? phoneNumber,
+//                string personalNumber,
+//                string userName,
+//                string password,
+//                string verificationCode,
+//                bool isVerified,
+//                bool isDelete,
+//                Role role,
+//                Gender gender
+//                )
+//{
+//    Id = id;
+//    FirsName = firsName;
+//    Lastname = lastname;
+//    Email = email;
+//    PhoneNumber = phoneNumber;
+//    PersonalNumber = personalNumber;
+//    UserName = userName;
+//    Password = password;
+//    VerificationCode = verificationCode;
+//    IsVerified = isVerified;
+//    IsDelete = isDelete;
+//    Role = role;
+//    Gender = gender;
+//}

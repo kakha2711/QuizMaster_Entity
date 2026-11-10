@@ -5,6 +5,7 @@ namespace QuizMaster.Domane.Models.DTOs
 {
     public class PersonDTO
     {
+        public int Id { get; set; }
         public string? FirsName { get; set; }
         public string? Lastname { get; set; }
         public string? Email { get; set; }

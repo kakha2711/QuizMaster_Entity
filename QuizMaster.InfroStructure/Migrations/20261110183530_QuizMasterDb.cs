@@ -34,8 +34,8 @@ namespace QuizMaster.InfroStructure.Migrations
                 {
                     table.PrimaryKey("PK_Lecturers", x => x.Id);
                     table.CheckConstraint("CHK_Lecturer_Email", "[Email] NOT LIKE '%[^A-Za-z0-9@._-]%'");
-                    table.CheckConstraint("CHK_Lecturer_FirsName", "[FirsName] NOT LIKE '%[^A-Za-z]%' or [FirsName] NOT LIKE '%[^ა-ჰ]%'");
-                    table.CheckConstraint("CHK_Lecturer_Lastname", "[Lastname] NOT LIKE '%[^A-Za-z]%' or [Lastname] NOT LIKE '%[^ა-ჰ]%'");
+                    table.CheckConstraint("CHK_Lecturer_FirsName", "[FirsName] NOT LIKE '%[^A-Za-z]%' or [FirsName] NOT LIKE N'%[^ა-ჰ]%'");
+                    table.CheckConstraint("CHK_Lecturer_Lastname", "[Lastname] NOT LIKE '%[^A-Za-z]%' or [Lastname] NOT LIKE N'%[^ა-ჰ]%'");
                     table.CheckConstraint("CHK_Lecturer_PersonalNumber", "[PersonalNumber] LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'");
                     table.CheckConstraint("CHK_Lecturer_PhoneNumber", "[PhoneNumber] LIKE '+995[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'");
                     table.CheckConstraint("CHK_Lecturer_VerificationCode", "[VerificationCode] LIKE '[0-9][0-9][0-9][0-9]'");
@@ -65,8 +65,8 @@ namespace QuizMaster.InfroStructure.Migrations
                 {
                     table.PrimaryKey("PK_Students", x => x.Id);
                     table.CheckConstraint("CHK_Student_Email", "[Email] NOT LIKE '%[^a-zA-Z0-9@._-]%'");
-                    table.CheckConstraint("CHK_Student_FirsName", "[FirsName] NOT LIKE '%[^a-zA-Z]%' or [FirsName] NOT LIKE '%[^ა-ჰ]%'");
-                    table.CheckConstraint("CHK_Student_Lastname", "[Lastname] NOT LIKE '%[^a-zA-Z]%' or [Lastname] NOT LIKE '%[^ა-ჰ]%'");
+                    table.CheckConstraint("CHK_Student_FirsName", "[FirsName] NOT LIKE '%[^a-zA-Z]%' or [FirsName] NOT LIKE N'%[^ა-ჰ]%'");
+                    table.CheckConstraint("CHK_Student_Lastname", "[Lastname] NOT LIKE '%[^a-zA-Z]%' or [Lastname] NOT LIKE N'%[^ა-ჰ]%'");
                     table.CheckConstraint("CHK_Student_PersonalNumber", "[PersonalNumber] LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'");
                     table.CheckConstraint("CHK_Student_PhoneNumber", "[PhoneNumber] LIKE '+995[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'");
                     table.CheckConstraint("CHK_Student_VerificationCode", "[VerificationCode] LIKE '[0-9][0-9][0-9][0-9]'");
@@ -123,8 +123,8 @@ namespace QuizMaster.InfroStructure.Migrations
                     Score = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     StudentId = table.Column<int>(type: "int", nullable: false),
-                    CompletedOngoingTests = table.Column<int>(type: "int", nullable: false),
-                    TestId = table.Column<int>(type: "int", nullable: false)
+                    TestId = table.Column<int>(type: "int", nullable: false),
+                    CompletedOngoingTests = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -116,9 +116,9 @@ namespace QuizMaster.InfroStructure.Migrations
                         {
                             t.HasCheckConstraint("CHK_Lecturer_Email", "[Email] NOT LIKE '%[^A-Za-z0-9@._-]%'");
 
-                            t.HasCheckConstraint("CHK_Lecturer_FirsName", "[FirsName] NOT LIKE '%[^A-Za-z]%' or [FirsName] NOT LIKE '%[^ა-ჰ]%'");
+                            t.HasCheckConstraint("CHK_Lecturer_FirsName", "[FirsName] NOT LIKE '%[^A-Za-z]%' or [FirsName] NOT LIKE N'%[^ა-ჰ]%'");
 
-                            t.HasCheckConstraint("CHK_Lecturer_Lastname", "[Lastname] NOT LIKE '%[^A-Za-z]%' or [Lastname] NOT LIKE '%[^ა-ჰ]%'");
+                            t.HasCheckConstraint("CHK_Lecturer_Lastname", "[Lastname] NOT LIKE '%[^A-Za-z]%' or [Lastname] NOT LIKE N'%[^ა-ჰ]%'");
 
                             t.HasCheckConstraint("CHK_Lecturer_PersonalNumber", "[PersonalNumber] LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'");
 
@@ -225,9 +225,9 @@ namespace QuizMaster.InfroStructure.Migrations
                         {
                             t.HasCheckConstraint("CHK_Student_Email", "[Email] NOT LIKE '%[^a-zA-Z0-9@._-]%'");
 
-                            t.HasCheckConstraint("CHK_Student_FirsName", "[FirsName] NOT LIKE '%[^a-zA-Z]%' or [FirsName] NOT LIKE '%[^ა-ჰ]%'");
+                            t.HasCheckConstraint("CHK_Student_FirsName", "[FirsName] NOT LIKE '%[^a-zA-Z]%' or [FirsName] NOT LIKE N'%[^ა-ჰ]%'");
 
-                            t.HasCheckConstraint("CHK_Student_Lastname", "[Lastname] NOT LIKE '%[^a-zA-Z]%' or [Lastname] NOT LIKE '%[^ა-ჰ]%'");
+                            t.HasCheckConstraint("CHK_Student_Lastname", "[Lastname] NOT LIKE '%[^a-zA-Z]%' or [Lastname] NOT LIKE N'%[^ა-ჰ]%'");
 
                             t.HasCheckConstraint("CHK_Student_PersonalNumber", "[PersonalNumber] LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'");
 
