@@ -1,5 +1,7 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using QuizMaster.Domane.Interface;
+using QuizMaster.Domane.Models.DTOs;
 using QuizMaster.Domane.Models.Entities;
 using QuizMaster.InfroStructure.Data;
 
@@ -35,7 +37,7 @@ namespace QuizMaster.InfroStructure.Repositories
 
         public async Task<T> GetPersonByPersonalNumber<T>(string personalNumber ) where T : Person
         {
-            return GetAllPerson<Person>().Result.Cast<T>().FirstOrDefault(p => p.PersonalNumber == personalNumber);
+            return GetAllPerson<T>().Result.FirstOrDefault(p => p.PersonalNumber == personalNumber);
         }
 
         public async Task<T> GetPersonByUserName<T>(string username) where T : Person
@@ -71,11 +73,45 @@ namespace QuizMaster.InfroStructure.Repositories
 
             if(person is Student student)
             {
-                _quiziMasterDb.Students.Update(student);
+                var studentUpdate = GetPersonByPersonalNumber<Student>(student.PersonalNumber).Result;
+
+                var propertys = typeof(Student).GetProperty("Grade");
+
+                studentUpdate.FirsName = person.FirsName != null ? person.FirsName : studentUpdate.FirsName;
+                studentUpdate.Lastname = person.Lastname != null ? person.Lastname : studentUpdate.Lastname;
+                studentUpdate.Grade = Convert.ToDouble(propertys.GetValue(person));
+                studentUpdate.Email = person.Email != null ? person.Email : studentUpdate.Email;
+                studentUpdate.PersonalNumber = person.PersonalNumber != null ? person.PersonalNumber : studentUpdate.PersonalNumber;
+                studentUpdate.UserName = person.UserName != null ? person.UserName : studentUpdate.UserName;
+                studentUpdate.Password = person.Password != null ? person.Password : studentUpdate.Password;
+                studentUpdate.IsVerified = person.IsVerified != null ? person.IsVerified : studentUpdate.IsVerified;
+                studentUpdate.IsDelete = person.IsDelete != null ? person.IsDelete : studentUpdate.IsDelete;
+                studentUpdate.Role = person.Role != null ? person.Role : studentUpdate.Role;
+                studentUpdate.Gender = person.Gender != null ? person.Gender : studentUpdate.Gender;
+
+
+                _quiziMasterDb.Students.Update(studentUpdate);
             }
             else if (person is Lecturer lecturer)
             {
-                _quiziMasterDb.Lecturers.Update(lecturer);
+                
+
+                var lecturerUpdate = GetPersonByPersonalNumber<Lecturer>(lecturer.PersonalNumber).Result;
+
+                lecturerUpdate.FirsName = person.FirsName != null ? person.FirsName : lecturerUpdate.FirsName;
+                lecturerUpdate.Lastname = person.Lastname != null ? person.Lastname : lecturerUpdate.Lastname;
+                lecturerUpdate.Email = person.Email != null ? person.Email : lecturerUpdate.Email;
+                lecturerUpdate.PersonalNumber = person.PersonalNumber != null ? person.PersonalNumber : lecturerUpdate.PersonalNumber;
+                lecturerUpdate.UserName = person.UserName != null ? person.UserName : lecturerUpdate.UserName;
+                lecturerUpdate.Password = person.Password != null ? person.Password : lecturerUpdate.Password;
+                lecturerUpdate.IsVerified = person.IsVerified != null ? person.IsVerified : lecturerUpdate.IsVerified;
+                lecturerUpdate.IsDelete = person.IsDelete != null ? person.IsDelete : lecturerUpdate.IsDelete;
+                lecturerUpdate.Role = person.Role != null ? person.Role : lecturerUpdate.Role;
+                lecturerUpdate.Gender = person.Gender != null ? person.Gender : lecturerUpdate.Gender;
+
+                
+
+                _quiziMasterDb.Lecturers.Update(lecturerUpdate);
             }
 
             return "Person updated successfully";
@@ -85,12 +121,10 @@ namespace QuizMaster.InfroStructure.Repositories
         {
             if(person is Student student)
             {
-                person.IsDelete = true;
                 UpdatePerson(person);
             }
             else if (person is Lecturer lecturer)
             {
-                person.IsDelete = true;
                 UpdatePerson(person);
             }
 
