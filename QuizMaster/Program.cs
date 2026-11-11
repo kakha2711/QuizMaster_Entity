@@ -151,27 +151,29 @@ namespace QuizMaster
 
             #region delete person
 
-            LecturerDTO lecturer = new LecturerDTO
-            {
-                PersonalNumber = "11223344551"
-            };
+            //LecturerDTO lecturer = new LecturerDTO
+            //{
+            //    PersonalNumber = "11223344551"
+            //};
 
-            personServices.DeleteStudent(lecturer).Wait();
+            //personServices.DeleteStudent(lecturer).Wait();
+
+            //#endregion
+
+            //#region Get person
+
+
+            //var lecturers = personServices.GetAllPersonService<LecturerDTO>().Result;
+
+
+            //foreach (var item in lecturers)
+            //{
+            //    Console.WriteLine(item.FirsName + " " + item.Lastname + " " + item.Gender);
+            //}
 
             #endregion
 
-            #region Get person
 
-
-            var lecturers = personServices.GetAllPersonService<LecturerDTO>().Result;
-
-
-            foreach (var item in lecturers)
-            {
-                Console.WriteLine(item.FirsName + " " + item.Lastname + " " + item.Gender);
-            }
-
-            #endregion
 
         }
     }

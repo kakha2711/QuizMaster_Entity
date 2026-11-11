@@ -178,19 +178,29 @@ namespace QuizMaster.Service.Services
 
         public async Task<string> DeleteStudent<T>(T person) where T : PersonDTO
         {
+            string result = string.Empty;
+
             if (typeof(T) == typeof(StudentDTO))
             {
+                var personEntity = _mapper.Map<Student>(person);
+
+                personEntity.IsDelete = true;
+
+                result = await _personRepository.DeletePerson(personEntity);
+
+                _unitOfWork.SaveChanges();
             }
             else if (typeof(T) == typeof(LecturerDTO))
             {
+                var personEntity = _mapper.Map<Lecturer>(person);
+
+                personEntity.IsDelete = true;
+
+                result = await _personRepository.DeletePerson(personEntity);
+
+                _unitOfWork.SaveChanges();
             } 
-                var personEntity = _mapper.Map<Person>(person);
-
-            personEntity.IsDelete = true;
-
-            var result = await _personRepository.DeletePerson(personEntity);
-
-            _unitOfWork.SaveChanges();
+                
             return result;
         }
     }

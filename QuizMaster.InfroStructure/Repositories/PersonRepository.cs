@@ -121,11 +121,19 @@ namespace QuizMaster.InfroStructure.Repositories
         {
             if(person is Student student)
             {
-                UpdatePerson(person);
+                var studentPerson = GetPersonByPersonalNumber<Student>(person.PersonalNumber).Result;
+
+                studentPerson.IsDelete = person.IsDelete;
+
+                UpdatePerson(studentPerson);
             }
             else if (person is Lecturer lecturer)
             {
-                UpdatePerson(person);
+                var lecturerPerson = GetPersonByPersonalNumber<Lecturer>(person.PersonalNumber).Result;
+
+                lecturerPerson.IsDelete = person.IsDelete;
+
+                UpdatePerson(lecturerPerson);
             }
 
             return "Person deleted successfully";
