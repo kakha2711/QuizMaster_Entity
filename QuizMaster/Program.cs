@@ -130,14 +130,16 @@ namespace QuizMaster
             //LecturerDTO lecturer = new LecturerDTO
             //{
             //    FirsName = "ნინო",
-            //    Lastname = "კაჭკაჭიშვილი",
-            //    Email = "kochi12@gmail.com",
+            //    Lastname = "კაჭკაჭაშვილი",
+            //    Email = "nino.kacho@gmail.com",
+            //    PhoneNumber = "599505045",
             //    PersonalNumber = "11223344551",
             //    Gender = Gender.Female
 
             //};
 
-            //StudentDTO studentDTO = new StudentDTO
+            StudentDTO studentDTO = new StudentDTO();
+
             //{
             //    FirsName = "გიორგი",
             //    Lastname = "კანტიძე",
@@ -145,7 +147,13 @@ namespace QuizMaster
             //    Grade = 30
             //};
 
-            //personServices.UpdateStudent(studentDTO).Wait();
+            studentDTO.FirsName = "გიორგი";
+            studentDTO.Lastname = "კანტიძე";
+            studentDTO.PersonalNumber = "77995588442";
+            studentDTO.Grade = 30;
+
+            //personServices.UpdateStudent(lecturer).Wait();
+            personServices.UpdateStudent(studentDTO).Wait();
 
             #endregion
 
@@ -180,7 +188,7 @@ namespace QuizMaster
 }
 
 
-
+//7   ნინო კაჭკაჭიშვილი	kochi12@gmail.com	+995577487898	11223344551	kacho82	$2a$11$uCrOYNzGJgWn3GX3g5LmLuHU1diWsnM9PLesPuzWPz0lld7YfvJGu	1257	0	1	0	1
 
 
 

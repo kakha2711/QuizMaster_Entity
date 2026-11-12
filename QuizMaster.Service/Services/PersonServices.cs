@@ -52,6 +52,7 @@ namespace QuizMaster.Service.Services
         {
             if (typeof(T) == typeof(StudentDTO))
             {
+
                 Student student = await _personRepository.GetPersonByPersonalNumber<Student>(personalNumber);
 
                 var studentDTO = _mapper.Map<StudentDTO>(student) as T;
@@ -158,7 +159,28 @@ namespace QuizMaster.Service.Services
 
             if (typeof(T) == typeof(StudentDTO))
             {
-                var personEntity = _mapper.Map<Student>(person);
+
+                var studentUpdate = GetPersonByPersonalNumber<StudentDTO>(person.PersonalNumber).Result;
+
+                var propertys = typeof(Student).GetProperty("Grade");
+
+                studentUpdate.FirsName = (person.FirsName != null || studentUpdate.FirsName != person.FirsName) ? person.FirsName : studentUpdate.FirsName;
+                studentUpdate.Lastname = (person.Lastname != null || studentUpdate.Lastname != person.Lastname) ? person.Lastname : studentUpdate.Lastname;
+
+                studentUpdate.Grade = Convert.ToDouble(propertys.GetValue(person));
+
+                studentUpdate.Email = (person.Email != null || studentUpdate.Email != person.Email) ? person.Email : studentUpdate.Email;
+                studentUpdate.PersonalNumber = (person.PersonalNumber != null || studentUpdate.PersonalNumber != person.PersonalNumber) ? person.PersonalNumber : studentUpdate.PersonalNumber;
+                studentUpdate.UserName = (person.UserName != null || studentUpdate.UserName != person.UserName) ? person.UserName : studentUpdate.UserName;
+                studentUpdate.Password = (person.Password != null || studentUpdate.Password != person.Password) ? person.Password : studentUpdate.Password;
+                studentUpdate.IsVerified = (person.IsVerified != null || studentUpdate.IsVerified != person.IsVerified) ? person.IsVerified : studentUpdate.IsVerified;
+                studentUpdate.IsDelete = (person.IsDelete != null || studentUpdate.IsDelete != person.IsDelete) ? person.IsDelete : studentUpdate.IsDelete;
+                studentUpdate.PhoneNumber = (person.PhoneNumber != null || person.PhoneNumber != studentUpdate.PhoneNumber) ? person.PhoneNumber : studentUpdate.PhoneNumber;
+                studentUpdate.VerificationCode = (person.VerificationCode != null || person.VerificationCode != studentUpdate.VerificationCode) ? person.VerificationCode : studentUpdate.VerificationCode;
+                studentUpdate.Role = (person.Role != null || studentUpdate.Role != person.Role) ? person.Role : studentUpdate.Role;
+                studentUpdate.Gender = (person.Gender != null || studentUpdate.Gender != person.Gender) ? person.Gender : studentUpdate.Gender;
+
+                var personEntity = _mapper.Map<Student>(studentUpdate);
                 
                 result = await _personRepository.UpdatePerson(personEntity);
 
@@ -166,6 +188,21 @@ namespace QuizMaster.Service.Services
             }
             else if (typeof(T) == typeof(LecturerDTO))
             {
+                var lecturerUpdate = GetPersonByPersonalNumber<LecturerDTO>(person.PersonalNumber).Result;
+
+                lecturerUpdate.FirsName = (person.FirsName != null || person.FirsName != lecturerUpdate.FirsName ) ? person.FirsName : lecturerUpdate.FirsName;
+                lecturerUpdate.Lastname = (person.Lastname != null || person.Lastname != lecturerUpdate.Lastname) ? person.Lastname : lecturerUpdate.Lastname;
+                lecturerUpdate.Email = (person.Email != null || person.Email !=lecturerUpdate.Email) ? person.Email : lecturerUpdate.Email;
+                lecturerUpdate.PersonalNumber = (person.PersonalNumber != null || person.PersonalNumber != lecturerUpdate.PersonalNumber) ? person.PersonalNumber : lecturerUpdate.PersonalNumber;
+                lecturerUpdate.UserName = (person.UserName != null || person.UserName != lecturerUpdate.UserName) ? person.UserName : lecturerUpdate.UserName;
+                lecturerUpdate.Password = (person.Password != null || person.Password != lecturerUpdate.Password) ? person.Password : lecturerUpdate.Password;
+                lecturerUpdate.IsVerified = (person.IsVerified != null || person.IsVerified != lecturerUpdate.IsVerified) ? person.IsVerified : lecturerUpdate.IsVerified;
+                lecturerUpdate.IsDelete = (person.IsDelete != null || person.IsDelete != lecturerUpdate.IsDelete) ? person.IsDelete : lecturerUpdate.IsDelete;
+                lecturerUpdate.PhoneNumber = (person.PhoneNumber != null || person.PhoneNumber != lecturerUpdate.PhoneNumber) ? person.PhoneNumber : lecturerUpdate.PhoneNumber;
+                lecturerUpdate.VerificationCode = (person.VerificationCode != null || person.VerificationCode != lecturerUpdate.VerificationCode) ? person.VerificationCode : lecturerUpdate.VerificationCode;
+                lecturerUpdate.Role = (person.Role != null || person.Role != lecturerUpdate.Role) ? person.Role : lecturerUpdate.Role;
+                lecturerUpdate.Gender = (person.Gender != null || person.Gender != lecturerUpdate.Gender) ? person.Gender : lecturerUpdate.Gender;
+
                 var personEntity = _mapper.Map<Lecturer>(person);
 
                 result = await _personRepository.UpdatePerson(personEntity);
