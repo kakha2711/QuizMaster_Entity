@@ -6,7 +6,7 @@ using QuizMaster.InfroStructure.Data;
 
 namespace QuizMaster.InfroStructure.Repositories
 {
-    internal class QuestionRepository : IQuestionRepository
+    public class QuestionRepository : IQuestionRepository
     {
         private readonly QuizMasterDbContext _quizMasterDb;
 

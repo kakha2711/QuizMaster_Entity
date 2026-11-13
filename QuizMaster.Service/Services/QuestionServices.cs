@@ -47,6 +47,8 @@ namespace QuizMaster.Service.Services
 
             await _questionRepository.AddTest(testEntity);
 
+            _unitOfWork.SaveChanges();
+
             return await Task.FromResult("Test added successfully");
         }
 
