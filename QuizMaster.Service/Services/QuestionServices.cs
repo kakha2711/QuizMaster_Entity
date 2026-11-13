@@ -32,11 +32,11 @@ namespace QuizMaster.Service.Services
             return await Task.FromResult(testDTOs);
         }
 
-        public async Task<Test> GetTestById(int id)
+        public async Task<TestDTO> GetTestById(int id)
         {
             Test tets = await _questionRepository.GetTestById(id);
 
-            var testDTOs = _mapper.Map<Test>(tets);
+            var testDTOs = _mapper.Map<TestDTO>(tets);
 
             return await Task.FromResult(testDTOs);
         }

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using QuizMaster.Domane.Enum;
 using QuizMaster.Domane.Interface;
 using QuizMaster.Domane.Models.DTOs;
 using QuizMaster.InfroStructure.Data;
@@ -54,19 +53,19 @@ namespace QuizMaster
 
             #region Add lecturer
 
-            //LecturerDTO lecturer = new LecturerDTO
-            //{
-            //    FirsName = "კახაბერ",
-            //    Lastname = "სართანია",
-            //    Email = "sartania.ka@gmail.com",
-            //    PhoneNumber = "599985226",
-            //    PersonalNumber = "01011015058",
-            //    UserName = "sartusha80",
-            //    Password = "sartusha1",
+            LecturerDTO lecturer = new LecturerDTO
+            {
+                FirsName = "კახაბერ",
+                Lastname = "სართანია",
+                Email = "sartania.ka@gmail.com",
+                PhoneNumber = "599985226",
+                PersonalNumber = "01011015058",
+                UserName = "sartusha80",
+                Password = "sartusha1",
 
-            //    Role = Domane.Enum.Role.Lecturer,
-            //    Gender = Domane.Enum.Gender.Male
-            //};
+              //  Role = Domane.Enum.Role.Lecturer,
+               // Gender = Domane.Enum.Gender.Male
+            };
 
             //LecturerDTO lecturer = new LecturerDTO
             //{
@@ -97,7 +96,7 @@ namespace QuizMaster
             //    Gender = Domane.Enum.Gender.Male
             //};
 
-            //personServices.AddStudent(studentDTO).Wait();
+            personServices.AddStudent(lecturer).Wait();
 
             #endregion
 
@@ -138,22 +137,22 @@ namespace QuizMaster
 
             //};
 
-            StudentDTO studentDTO = new StudentDTO();
+            //StudentDTO studentDTO = new StudentDTO();
 
-            //{
-            //    FirsName = "გიორგი",
-            //    Lastname = "კანტიძე",
-            //    PersonalNumber = "77995588442",
-            //    Grade = 30
-            //};
+            ////{
+            ////    FirsName = "გიორგი",
+            ////    Lastname = "კანტიძე",
+            ////    PersonalNumber = "77995588442",
+            ////    Grade = 30
+            ////};
 
-            studentDTO.FirsName = "გიორგი";
-            studentDTO.Lastname = "კანტიძე";
-            studentDTO.PersonalNumber = "77995588442";
-            studentDTO.Grade = 30;
+            //studentDTO.FirsName = "გიორგი";
+            //studentDTO.Lastname = "კანტიძე";
+            //studentDTO.PersonalNumber = "77995588442";
+            //studentDTO.Grade = 30;
 
-            //personServices.UpdateStudent(lecturer).Wait();
-            personServices.UpdateStudent(studentDTO).Wait();
+            ////personServices.UpdateStudent(lecturer).Wait();
+            //personServices.UpdateStudent(studentDTO).Wait();
 
             #endregion
 

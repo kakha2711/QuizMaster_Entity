@@ -8,37 +8,37 @@ namespace QuizMaster.Service.Interface
     {
         //for Test
         Task<List<TestDTO>> GetAllTests();
-        Task<Test> GetTestById(int id);
-        Task<string> AddTest(Test testCatalog);
-        Task<string> UpdateTest(Test testCatalog);
-        Task<string> DeleteTest(Test testCatalog);
+        Task<TestDTO> GetTestById(int id);
+        Task<string> AddTest(TestDTO testCatalog);
+        Task<string> UpdateTest(TestDTO testCatalog);
+        Task<string> DeleteTest(TestDTO testCatalog);
 
 
 
         //for Question
-        Task<List<Question>> GetAllQuestions();
-        Task<List<Question>> GetAllQuestionsById(int id);
-        Task<List<Question>> GetQuestionsByTestId(int testCatalogId);
-        Task<string> AddQuestion(Question questionTest);
-        Task<string> UpdateQuestion(Question questionTest);
-        Task<string> DeleteQuestion(Question questionTest);
+        Task<List<QuestionDTO>> GetAllQuestions();
+        Task<List<QuestionDTO>> GetAllQuestionsById(int id);
+        Task<List<QuestionDTO>> GetQuestionsByTestId(int testCatalogId);
+        Task<string> AddQuestion(QuestionDTO questionTest);
+        Task<string> UpdateQuestion(QuestionDTO questionTest);
+        Task<string> DeleteQuestion(QuestionDTO questionTest);
 
         //for Ansver
-        Task<List<Answer>> GetAllAnswer();
-        Task<Answer> GetAnswerById(int Studentid);
-        Task<List<Answer>> GetAnswerByQuestionId(int questionId);
-        Task<string> AddAnswer(Answer answerTest);
-        Task<string> UpdateAnswer(Answer answerTest);
-        Task<string> DeleteAnswer(Answer answerTest);
+        Task<List<AnswerDTO>> GetAllAnswer();
+        Task<AnswerDTO> GetAnswerById(int Studentid);
+        Task<List<AnswerDTO>> GetAnswerByQuestionId(int questionId);
+        Task<string> AddAnswer(AnswerDTO answerTest);
+        Task<string> UpdateAnswer(AnswerDTO answerTest);
+        Task<string> DeleteAnswer(AnswerDTO answerTest);
 
 
         //for Test Submissions
-        Task<List<TestSubmissions>> GetAllTestSubmissions(int Studentid);
-        Task<List<TestSubmissions>> GetTestSubmissionsDTObyStudentId(int studentId);
-        Task<string> AddTestSubmissions(TestSubmissions testSubmissions);
+        Task<List<TestSubmissionsDTO>> GetAllTestSubmissions(int Studentid);
+        Task<List<TestSubmissionsDTO>> GetTestSubmissionsDTObyStudentId(int studentId);
+        Task<string> AddTestSubmissions(TestSubmissionsDTO testSubmissions);
 
         //for Test Results
-        Task<List<StudentTestResult>> GetTestResults();
-        Task<StudentTestResult> AddTestResults(StudentTestResult testResult);
+        Task<List<StudentTestResultDTO>> GetTestResults();
+        Task<StudentTestResultDTO> AddTestResults(StudentTestResultDTO testResult);
     }
 }
