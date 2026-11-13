@@ -6,7 +6,7 @@ namespace QuizMaster.Service.Interface
 {
     public interface IQuestionServices
     {
-        //for student
+        //for Test
         Task<List<TestDTO>> GetAllTests();
         Task<Test> GetTestById(int id);
         Task<string> AddTest(Test testCatalog);
@@ -15,7 +15,7 @@ namespace QuizMaster.Service.Interface
 
 
 
-        //for Lecturer
+        //for Question
         Task<List<Question>> GetAllQuestions();
         Task<List<Question>> GetAllQuestionsById(int id);
         Task<List<Question>> GetQuestionsByTestId(int testCatalogId);
@@ -23,7 +23,7 @@ namespace QuizMaster.Service.Interface
         Task<string> UpdateQuestion(Question questionTest);
         Task<string> DeleteQuestion(Question questionTest);
 
-
+        //for Ansver
         Task<List<Answer>> GetAllAnswer();
         Task<Answer> GetAnswerById(int Studentid);
         Task<List<Answer>> GetAnswerByQuestionId(int questionId);
@@ -32,12 +32,12 @@ namespace QuizMaster.Service.Interface
         Task<string> DeleteAnswer(Answer answerTest);
 
 
-
+        //for Test Submissions
         Task<List<TestSubmissions>> GetAllTestSubmissions(int Studentid);
         Task<List<TestSubmissions>> GetTestSubmissionsDTObyStudentId(int studentId);
         Task<string> AddTestSubmissions(TestSubmissions testSubmissions);
 
-
+        //for Test Results
         Task<List<StudentTestResult>> GetTestResults();
         Task<StudentTestResult> AddTestResults(StudentTestResult testResult);
     }

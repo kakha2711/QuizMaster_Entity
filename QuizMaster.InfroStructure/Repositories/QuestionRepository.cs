@@ -112,13 +112,15 @@ namespace QuizMaster.InfroStructure.Repositories
             return await Task.FromResult(_quizMasterDb.Answers.ToList());
         }
 
-        public async Task<Answer> GetAnswerById(int Studentid)
+        public async Task<Answer> GetAnswerById(int Id)
         {
-            var answer = _quizMasterDb.Answers.FirstOrDefault(a => a.Id == Studentid);
+            var answer = _quizMasterDb.Answers.FirstOrDefault(a => a.Id == Id);
+
+            //aq Id shevcvale da sxvaganac shesacvlelia
 
             if(answer == null)
             {
-                throw new Exception($"Answer with ID {Studentid} not found.");
+                throw new Exception($"Answer with ID {Id} not found.");
             }
             return await Task.FromResult(answer);
         }
