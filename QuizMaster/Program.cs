@@ -53,19 +53,19 @@ namespace QuizMaster
 
             #region Add lecturer
 
-            LecturerDTO lecturer = new LecturerDTO
-            {
-                FirsName = "კახაბერ",
-                Lastname = "სართანია",
-                Email = "sartania.ka@gmail.com",
-                PhoneNumber = "599985226",
-                PersonalNumber = "01011015058",
-                UserName = "sartusha80",
-                Password = "sartusha1",
+            //LecturerDTO lecturer = new LecturerDTO
+            //{
+            //    FirsName = "კახაბერ",
+            //    Lastname = "სართანია",
+            //    Email = "sartania.ka@gmail.com",
+            //    PhoneNumber = "599985226",
+            //    PersonalNumber = "01011015058",
+            //    UserName = "sartusha80",
+            //    Password = "sartusha1",
 
-              //  Role = Domane.Enum.Role.Lecturer,
-               // Gender = Domane.Enum.Gender.Male
-            };
+            //    //Role = Domane.Enum.Role.Lecturer,
+            //    //Gender = Domane.Enum.Gender.Male
+            //};
 
             //LecturerDTO lecturer = new LecturerDTO
             //{
@@ -81,22 +81,22 @@ namespace QuizMaster
             //    Gender = Domane.Enum.Gender.Female
             //};
 
-            //StudentDTO studentDTO = new StudentDTO
-            //{
-            //    FirsName = "გიორგი",
-            //    Lastname = "კანტიძე",
-            //    Email = "beridze.kantidze@gmail.com",
-            //    PhoneNumber = "555123456",
-            //    PersonalNumber = "77995588442",
-            //    UserName = "kantidze12",
-            //    Password = "beridze12",
-            //    Grade = 10,
+            StudentDTO studentDTO = new StudentDTO
+            {
+                FirsName = "გიორგი",
+                Lastname = "კანტიძე",
+                Email = "beridze.kantidze@gmail.com",
+                PhoneNumber = "555123456",
+                PersonalNumber = "77995588442",
+                UserName = "kantidze12",
+                Password = "beridze12",
+                Grade = 10,
 
-            //    Role = Domane.Enum.Role.Student,
-            //    Gender = Domane.Enum.Gender.Male
-            //};
+                //Role = Domane.Enum.Role.Student,
+                //Gender = Domane.Enum.Gender.Male
+            };
 
-            personServices.AddStudent(lecturer).Wait();
+            personServices.AddStudent(studentDTO).Wait();
 
             #endregion
 
