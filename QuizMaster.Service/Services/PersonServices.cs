@@ -4,6 +4,7 @@ using BCrypt.Net;
 using QuizMaster.Domane.Interface;
 using QuizMaster.Domane.Models.DTOs;
 using QuizMaster.Domane.Models.Entities;
+using QuizMaster.InfroStructure.Repositories;
 using QuizMaster.Service.Interface;
 
 
@@ -118,6 +119,9 @@ namespace QuizMaster.Service.Services
 
                 _unitOfWork.SaveChanges();
 
+                EmailService.SendEmail(student.Email, "Verification Code", $"Your verification code is: {verificationCode.ToString()}");
+
+
                 return "Student added successfully";
             }
             else if (typeof(T) == typeof(LecturerDTO))
@@ -133,6 +137,9 @@ namespace QuizMaster.Service.Services
                     var result = await _personRepository.AddStudent(lecturer);
 
                     _unitOfWork.SaveChanges();
+
+                    EmailService.SendEmail(lecturer.Email, "Verification Code", $"Your verification code is: {verificationCode.ToString()}");
+
                 }
                 catch (Exception ex)
                 {
@@ -160,15 +167,11 @@ namespace QuizMaster.Service.Services
             if (typeof(T) == typeof(StudentDTO))
             {
 
-                var studentUpdate = GetPersonByPersonalNumber<StudentDTO>(person.PersonalNumber).Result;
+                var studentUpdate = await GetPersonByPersonalNumber<StudentDTO>(person.PersonalNumber);
 
-                var propertys = typeof(Student).GetProperty("Grade");
-
+                studentUpdate.Grade = studentUpdate.Grade;
                 studentUpdate.FirsName = (person.FirsName != null || studentUpdate.FirsName != person.FirsName) ? person.FirsName : studentUpdate.FirsName;
                 studentUpdate.Lastname = (person.Lastname != null || studentUpdate.Lastname != person.Lastname) ? person.Lastname : studentUpdate.Lastname;
-
-                studentUpdate.Grade = Convert.ToDouble(propertys.GetValue(person));
-
                 studentUpdate.Email = (person.Email != null || studentUpdate.Email != person.Email) ? person.Email : studentUpdate.Email;
                 studentUpdate.PersonalNumber = (person.PersonalNumber != null || studentUpdate.PersonalNumber != person.PersonalNumber) ? person.PersonalNumber : studentUpdate.PersonalNumber;
                 studentUpdate.UserName = (person.UserName != null || studentUpdate.UserName != person.UserName) ? person.UserName : studentUpdate.UserName;
@@ -180,15 +183,32 @@ namespace QuizMaster.Service.Services
                 studentUpdate.Role = (person.Role != null || studentUpdate.Role != person.Role) ? person.Role : studentUpdate.Role;
                 studentUpdate.Gender = (person.Gender != null || studentUpdate.Gender != person.Gender) ? person.Gender : studentUpdate.Gender;
 
-                var personEntity = _mapper.Map<Student>(studentUpdate);
-                
-                result = await _personRepository.UpdatePerson(personEntity);
+                //var tt = _mapper.Map<Student>(studentUpdate);//ეს უნდა შევამოწმო
+
+                var personEntity = await _personRepository.GetPersonByPersonalNumber<Student>(studentUpdate.PersonalNumber);
+                if (personEntity == null)
+                {
+                    throw new InvalidOperationException($"Student with personal number '{studentUpdate.PersonalNumber}' was not found.");
+                }
+
+                _mapper.Map(studentUpdate, personEntity);
+
+
+                //result = await _personRepository.UpdatePerson(personEntity);
+                try
+                {
+                    result = await _personRepository.UpdatePerson(personEntity);
+                }
+                catch (Exception ex)
+                {
+                    var tt = ex.Message;
+                }
 
                 _unitOfWork.SaveChanges();
             }
             else if (typeof(T) == typeof(LecturerDTO))
             {
-                var lecturerUpdate = GetPersonByPersonalNumber<LecturerDTO>(person.PersonalNumber).Result;
+                var lecturerUpdate = await GetPersonByPersonalNumber<LecturerDTO>(person.PersonalNumber);
 
                 lecturerUpdate.FirsName = (person.FirsName != null || person.FirsName != lecturerUpdate.FirsName ) ? person.FirsName : lecturerUpdate.FirsName;
                 lecturerUpdate.Lastname = (person.Lastname != null || person.Lastname != lecturerUpdate.Lastname) ? person.Lastname : lecturerUpdate.Lastname;
@@ -203,10 +223,14 @@ namespace QuizMaster.Service.Services
                 lecturerUpdate.Role = (person.Role != null || person.Role != lecturerUpdate.Role) ? person.Role : lecturerUpdate.Role;
                 lecturerUpdate.Gender = (person.Gender != null || person.Gender != lecturerUpdate.Gender) ? person.Gender : lecturerUpdate.Gender;
 
-                var personEntity = _mapper.Map<Lecturer>(person);
+                var personEntity = await _personRepository.GetPersonByPersonalNumber<Lecturer>(lecturerUpdate.PersonalNumber);
+                if (personEntity == null)
+                {
+                    throw new InvalidOperationException($"Lecturer with personal number '{lecturerUpdate.PersonalNumber}' was not found.");
+                }
 
+                _mapper.Map(lecturerUpdate, personEntity);
                 result = await _personRepository.UpdatePerson(personEntity);
-
                 _unitOfWork.SaveChanges();
             }
     
@@ -239,6 +263,31 @@ namespace QuizMaster.Service.Services
             } 
                 
             return result;
+        }
+
+
+        public async Task<T> LogIn<T>(string userName, string password ) where T : PersonDTO
+        {
+            if (typeof(T) == typeof(StudentDTO))
+            {
+                Student student = await _personRepository.GetPersonByUserName<Student>(userName);
+                if (student != null && BCrypt.Net.BCrypt.Verify(password, student.Password))
+                {
+                    var studentDTO = _mapper.Map<StudentDTO>(student) as T;
+                    return studentDTO;
+                }
+            }
+            else if (typeof(T) == typeof(LecturerDTO))
+            {
+                Lecturer lecturer = await _personRepository.GetPersonByUserName<Lecturer>(userName);
+                if (lecturer != null && BCrypt.Net.BCrypt.Verify(password, lecturer.Password))
+                {
+                    var lecturerDTO = _mapper.Map<LecturerDTO>(lecturer) as T;
+                    return lecturerDTO;
+                }
+            }
+
+            return default;
         }
     }
 }

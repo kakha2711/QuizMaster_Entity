@@ -12,7 +12,7 @@ namespace QuizMaster.Service.Interface
         public  Task<string> AddStudent<T>(T person) where T : PersonDTO;
         public Task<string> UpdateStudent<T>(T person) where T : PersonDTO;
         public Task<string> DeleteStudent<T>(T person) where T : PersonDTO;
-
+        public  Task<T> LogIn<T>(string userName, string password) where T : PersonDTO;
 
     }
 }

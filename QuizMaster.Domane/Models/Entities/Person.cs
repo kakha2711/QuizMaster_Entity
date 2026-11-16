@@ -22,8 +22,8 @@ namespace QuizMaster.Domane.Models.Entities
         public bool IsVerified { get; set; } = false;
         public bool IsDelete { get; set; } = false;
 
-        public Role Role { get; set; }
-        public Gender Gender { get; set; }
+        public Role? Role { get; set; }
+        public Gender? Gender { get; set; }
     }
 
     public class PersonValidator : AbstractValidator<Person>

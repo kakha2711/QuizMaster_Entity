@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QuizMaster.Domane\QuizMaster.Domane.csproj" />
+    <ProjectReference Include="..\QuizMaster.InfroStructure\QuizMaster.InfroStructure.csproj" />
   </ItemGroup>
 
 </Project>

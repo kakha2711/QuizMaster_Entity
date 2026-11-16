@@ -8,6 +8,8 @@ using QuizMaster.InfroStructure.Data;
 using QuizMaster.InfroStructure.Repositories;
 using QuizMaster.Service.Interface;
 using QuizMaster.Service.Services;
+using QuizMaster.UI;
+using Spectre.Console;
 
 namespace QuizMaster
 {
@@ -40,6 +42,9 @@ namespace QuizMaster
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IPersonServices, PersonServices>();
 
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<IQuestionServices, QuestionServices>();
+
 
             services.AddAutoMapper(ap =>
             {
@@ -49,7 +54,12 @@ namespace QuizMaster
 
             var serviceProvider = services.BuildServiceProvider();
 
-            var personServices = serviceProvider.GetRequiredService<IPersonServices>();
+            IPersonServices personServices = serviceProvider.GetRequiredService<IPersonServices>();
+            IQuestionServices questionServices = serviceProvider.GetRequiredService<IQuestionServices>();
+
+            Menu.ShowMenuAsync(personServices, questionServices).Wait();
+
+
 
             #region Add lecturer
 
@@ -81,22 +91,22 @@ namespace QuizMaster
             //    Gender = Domane.Enum.Gender.Female
             //};
 
-            StudentDTO studentDTO = new StudentDTO
-            {
-                FirsName = "გიორგი",
-                Lastname = "კანტიძე",
-                Email = "beridze.kantidze@gmail.com",
-                PhoneNumber = "555123456",
-                PersonalNumber = "77995588442",
-                UserName = "kantidze12",
-                Password = "beridze12",
-                Grade = 10,
+            //StudentDTO studentDTO = new StudentDTO
+            //{
+            //    FirsName = "გიორგი",
+            //    Lastname = "კანტიძე",
+            //    Email = "beridze.kantidze@gmail.com",
+            //    PhoneNumber = "555123456",
+            //    PersonalNumber = "77995588442",
+            //    UserName = "kantidze12",
+            //    Password = "beridze12",
+            //    Grade = 10,
 
-                //Role = Domane.Enum.Role.Student,
-                //Gender = Domane.Enum.Gender.Male
-            };
+            //    //Role = Domane.Enum.Role.Student,
+            //    //Gender = Domane.Enum.Gender.Male
+            //};
 
-            personServices.AddStudent(studentDTO).Wait();
+            //personServices.AddStudent(studentDTO).Wait();
 
             #endregion
 
