@@ -1,5 +1,6 @@
 ﻿using QuizMaster.Domane.Enum;
 using QuizMaster.Domane.Models.DTOs;
+using QuizMaster.Domane.Models.Entities;
 using QuizMaster.Service.Interface;
 using Spectre.Console;
 
@@ -382,6 +383,99 @@ namespace QuizMaster.UI
                     studentDTO.PersonalNumber = "99887744551";
 
                     personServices.UpdateStudent<StudentDTO>(studentDTO);
+
+                    break;
+
+                case "start Test":
+
+                    StudentTestResultDTO studentTestResultDTO = new StudentTestResultDTO();
+                    TestSubmissionsDTO testSubmissionsDTO = new TestSubmissionsDTO();
+
+                    var starrtDate = DateTime.Now;
+
+                    studentTestResultDTO.StudentId = studentDTO.Id;
+                    studentTestResultDTO.StartDate = starrtDate;
+
+                    testSubmissionsDTO.StudentId = studentDTO.Id;
+
+
+                    var Tests = questionServices.GetAllTests().Result;
+
+                    var selectedQuestion = AnsiConsole.Prompt(
+                                  new SelectionPrompt<TestDTO>()
+                                      .Title("Select a [green]book[/]")
+                                      .PageSize(10)
+                                      .UseConverter(Tests => $"{Tests.Id} by{Tests.Title}")
+                                      .AddChoices(Tests));
+
+                    AnsiConsole.MarkupLine($"You selected: [yellow]{selectedQuestion.Title}[/]");
+
+                    var indexTest = selectedQuestion.Id;
+
+                    Random random = new Random();
+
+                    List<QuestionDTO> questions = questionServices
+                                                    .GetAllQuestions().Result
+                                                    .Where(q => q.TestId == indexTest)
+                                                    .OrderBy(q => random.Next())
+                                                    .Take(5)
+                                                    .ToList();
+
+                    double qula = selectedQuestion.MaximumScore/ selectedQuestion.QuestionsNumber;
+
+                    double sumScore = 1;
+
+                    int count = 0;
+
+                    foreach (var question in questions)
+                    {
+                        AnsiConsole.WriteLine($"Question: {question.QuestionText}");
+
+                        var answers = questionServices.GetAllAnswer().Result.Where(a => a.QuestionTestId == question.Id).ToList();
+
+                        List<string> selected0 = AnsiConsole.Prompt(
+                            new MultiSelectionPrompt<string>()
+                            .Title("Select [green]notification plugins[/] to install:")
+                            .AddChoices(answers.Select(a => $"{a.Id}: {a.AnswerText}")));
+
+                        AnsiConsole.MarkupLine($"[blue]Installing {selected.Count} plugin(s)...[/]");
+
+                        string[] strings = new string[selected0.Count];
+
+                        for (int i = 0; i < selected0.Count; i++)
+                        {
+                            int answerId = Convert.ToInt32(selected0[i].Split(':')[0]);
+
+                            var answer = answers.FirstOrDefault(a => a.Id == answerId);
+
+                            if (answer != null && answer.IsCorrect)
+                            {
+                                count++;
+                            }
+
+                            testSubmissionsDTO.AnswerId = answerId;
+                            testSubmissionsDTO.QuestionId = question.Id;
+                            testSubmissionsDTO.CorrectAnswer = answer.IsCorrect;
+
+                            questionServices.AddTestSubmissions(testSubmissionsDTO);
+                        }
+
+                        if (count == selected0.Count)
+                        {
+                            sumScore += 2 * qula;
+                        }
+                            count = 0;
+                    }
+
+                    studentTestResultDTO.Score = sumScore;
+                    studentTestResultDTO.TestId = indexTest;
+
+
+                    questionServices.AddTestResults(studentTestResultDTO);
+
+                   studentDTO.Grade = sumScore;
+
+                    personServices.UpdateStudent<StudentDTO>(studentDTO);//ეს არის შესამოწმებელი
 
                     break;
             }

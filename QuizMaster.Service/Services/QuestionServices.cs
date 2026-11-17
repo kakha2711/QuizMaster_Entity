@@ -230,6 +230,8 @@ namespace QuizMaster.Service.Services
 
             await _questionRepository.AddTestSubmissions(testSubmissionsEntity);
 
+            _unitOfWork.SaveChanges();
+
             return await Task.FromResult("Test submission added successfully.");
         }
 
@@ -242,6 +244,8 @@ namespace QuizMaster.Service.Services
             var testResultEntity = _mapper.Map<StudentTestResult>(testResult);
 
             await _questionRepository.AddTestResults(testResultEntity);
+
+            _unitOfWork.SaveChanges();
 
             return await Task.FromResult(_mapper.Map<StudentTestResultDTO>(testResultEntity));
         }
