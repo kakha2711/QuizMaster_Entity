@@ -1,9 +1,7 @@
 ﻿using QuizMaster.Domane.Enum;
 using QuizMaster.Domane.Models.DTOs;
-using QuizMaster.Domane.Models.Entities;
 using QuizMaster.Service.Interface;
 using Spectre.Console;
-using System.Transactions;
 
 namespace QuizMaster.UI
 {
@@ -36,7 +34,7 @@ namespace QuizMaster.UI
 
         }
 
-        public static void LogInOrRegisterMeniu(string  role, IPersonServices personServices, IQuestionServices questionServices)
+        public static void LogInOrRegisterMeniu(string role, IPersonServices personServices, IQuestionServices questionServices)
         {
             var selected = AnsiConsole.Prompt(
                new MultiSelectionPrompt<string>()
@@ -76,7 +74,7 @@ namespace QuizMaster.UI
 
             LecturerDTO lecturer = personServices.LogIn<LecturerDTO>(username, password).Result;
 
-            if(lecturer == null)
+            if (lecturer == null)
             {
                 Console.WriteLine("Invalid username or password.");
                 return;
@@ -89,7 +87,6 @@ namespace QuizMaster.UI
                                         "Show All Students",
                                         "Show Student Personul Number",
                                         "Show Lecturer",
-                                        //"Show Lecturer by User Name",
                                         "Uppdate Leqturer",
                                         "Delete Leqturer",
                                         "Show All Tests",
@@ -97,11 +94,10 @@ namespace QuizMaster.UI
                                         "Update Test",
                                         "Delete Test",
                                         "Show All Questions",
-                                        "Add Question",
+                                        "Add Question and Answers",
                                         "Update Question",
                                         "Delete Question",
                                         "Show All Answers",
-                                        "Add Answer",
                                         "Update Answer",
                                         "Delete Answer"
                                         ));
@@ -112,9 +108,7 @@ namespace QuizMaster.UI
                 AnsiConsole.WriteLine($"- {item}");
             }
 
-            //Console.WriteLine(selected[0]);
-
-            switch(selected[0])
+            switch (selected[0])
             {
                 case "Show All Students":
                     Console.WriteLine();
@@ -214,7 +208,7 @@ namespace QuizMaster.UI
                 case "Add Test":
 
                     TestDTO testDTO = new TestDTO();
-                    
+
                     Console.Write("Enter Test Title: ");
                     testDTO.Title = Console.ReadLine();
 
@@ -236,12 +230,96 @@ namespace QuizMaster.UI
                     string addQuestion = await questionServices.AddTest(testDTO);
 
                     break;
+
+
+                case "\"Add Question and Answers":
+
+                    QuestionDTO questionDTO = new QuestionDTO();
+                    AnswerDTO answerTests;
+
+                    int count = 0;
+                    double questionNumber = 0;
+
+                    do
+                    {
+                        Console.Write("Enter Question Text: ");
+                        questionDTO.QuestionText = Console.ReadLine();
+
+                        var Tests = await questionServices.GetAllTests();
+
+                        var selectedQuestion = AnsiConsole.Prompt(
+                                   new SelectionPrompt<TestDTO>()
+                                       .Title("Select a [green]book[/]")
+                                       .PageSize(10)
+                                       .UseConverter(Tests => $"{Tests.Id} by{Tests.Title}")
+                                       .AddChoices(Tests));
+
+                        AnsiConsole.MarkupLine($"You selected: [yellow]{selectedQuestion.Title}[/]");
+
+                        questionDTO.TestId = selectedQuestion.Id;
+
+                        var fruit = AnsiConsole.Prompt(
+                                new SelectionPrompt<string>()
+                               .Title("Enter ChoiceQuestion:")
+                               .AddChoices("SingleChoiceQuestion", "MultiChoiceQuestion"));
+
+                        AnsiConsole.MarkupLine($"You selected: [green]{fruit}[/]");
+                        questionDTO.ChoiceQuestion = (ChoiceQuestion)Enum.Parse(typeof(ChoiceQuestion), fruit);
+
+
+                        questionNumber = selectedQuestion.QuestionsNumber;
+                        count++;
+
+                        string addQuestionResult = await questionServices.AddQuestion(questionDTO);
+
+                        List<QuestionDTO> questionDTOs = await questionServices.GetAllQuestions();
+
+                        int index = questionDTOs.FirstOrDefault(q => q.QuestionText == questionDTO.QuestionText).Id;
+
+                        for (int i = 0; i < 4; i++)
+                        {
+                            answerTests = new AnswerDTO();
+
+                            Console.Write($"Enter {i + 1} Answer: ");
+                            answerTests.AnswerText = Console.ReadLine();
+
+                            Console.Write("Enter IsCorrect: ");
+
+                            string? answer = AnsiConsole.Prompt(
+                                 new SelectionPrompt<string>()
+                                .Title("Enter IsCorrect:")
+                                .AddChoices("True", "False"));
+
+                            AnsiConsole.MarkupLine($"You selected: [green]{answer}[/]");
+
+                            bool isvalis = bool.TryParse(answer, out bool result);
+
+                            answerTests.IsCorrect = result;
+                            answerTests.QuestionTestId = index;
+
+                            string addAnswersResult = await questionServices.AddAnswer(answerTests);
+                        }
+                    }
+                    while (count < questionNumber);
+
+                    break;
+
+
+
+                case "add Answer":
+
+                    AnswerDTO answerDTO = new AnswerDTO();
+
+                    Console.Write("Enter Answer Text: ");
+                    answerDTO.AnswerText = Console.ReadLine();
+
+                    break;
             }
         }
 
 
         public static void ShoWStudentMeniu(IPersonServices personServices, IQuestionServices questionServices)
-            {
+        {
 
             Console.Write("Enter User Name: ");
             string username = Console.ReadLine();
@@ -251,7 +329,7 @@ namespace QuizMaster.UI
 
             StudentDTO studentDTO = personServices.LogIn<StudentDTO>(username, password).Result;
 
-            if(studentDTO == null)
+            if (studentDTO == null)
             {
                 Console.WriteLine("Invalid username or password.");
                 return;
@@ -259,15 +337,13 @@ namespace QuizMaster.UI
 
             var selected = AnsiConsole.Prompt(
                             new MultiSelectionPrompt<string>()
-            .               Title("Which [green]features[/] do you want to enable?")
+            .Title("Which [green]features[/] do you want to enable?")
                            .AddChoices(
-                                        //"Show All Students",
                                         "Show Student",
-                                        //"Show Student by User Name",
                                         //"Add Student",
                                         "Uppdate Student",
-                                        "Delete Student",
-                                        "Show Students Lider Boards"
+                                        "Show Students Lider Boards",
+                                        "start Test"
                                         ));
 
             AnsiConsole.WriteLine("You selected:");
@@ -276,27 +352,25 @@ namespace QuizMaster.UI
                 AnsiConsole.WriteLine($"- {item}");
             }
 
-            //Console.WriteLine(selected[0]);
-
             switch (selected[0])
             {
                 case "Show Student":
 
-                        Console.WriteLine(
-                                        "სახელი: " + studentDTO.FirsName + "\n" +
-                                        "გვარი: " + studentDTO.Lastname + "\n" +
-                                        "ფოსტა: " + studentDTO.Email + "\n" +
-                                        "ტელეფონი:" + studentDTO.PhoneNumber + "\n" +
-                                        "პირადი ნომერი: " + studentDTO.PersonalNumber + "\n" +
-                                        "იუზერნეიმი: " + studentDTO.UserName + "\n" +
-                                        "პაროლი: " + studentDTO.Password + "\n" +
-                                        "ვერიფიკაციის კოდი" + studentDTO.VerificationCode + "\n" +
-                                        "წაშლილი" + studentDTO.IsDelete + "\n" +
-                                        "ვერიფიცირებული" + studentDTO.IsVerified + "\n" +
-                                        "სქესი" + studentDTO.Gender + "\n" +
-                                        "როლი" + studentDTO.Role
-                                        );
-                    
+                    Console.WriteLine(
+                                    "სახელი: " + studentDTO.FirsName + "\n" +
+                                    "გვარი: " + studentDTO.Lastname + "\n" +
+                                    "ფოსტა: " + studentDTO.Email + "\n" +
+                                    "ტელეფონი:" + studentDTO.PhoneNumber + "\n" +
+                                    "პირადი ნომერი: " + studentDTO.PersonalNumber + "\n" +
+                                    "იუზერნეიმი: " + studentDTO.UserName + "\n" +
+                                    "პაროლი: " + studentDTO.Password + "\n" +
+                                    "ვერიფიკაციის კოდი" + studentDTO.VerificationCode + "\n" +
+                                    "წაშლილი" + studentDTO.IsDelete + "\n" +
+                                    "ვერიფიცირებული" + studentDTO.IsVerified + "\n" +
+                                    "სქესი" + studentDTO.Gender + "\n" +
+                                    "როლი" + studentDTO.Role
+                                    );
+
 
                     break;
 
@@ -338,18 +412,18 @@ namespace QuizMaster.UI
             Console.Write("Enter Email: ");
             persontDTO.Email = Console.ReadLine();
 
-                Console.Write("Enter Phone Number: ");
+            Console.Write("Enter Phone Number: ");
             persontDTO.PhoneNumber = Console.ReadLine();
 
 
-                Console.Write("Enter Personal Number: ");
+            Console.Write("Enter Personal Number: ");
             persontDTO.PersonalNumber = Console.ReadLine();
 
 
-                Console.Write("Enter User Nume: ");
+            Console.Write("Enter User Nume: ");
             persontDTO.UserName = Console.ReadLine();
 
-                Console.Write("Enter Password: ");
+            Console.Write("Enter Password: ");
             persontDTO.Password = Console.ReadLine();
 
             Console.Write("Enter Gender: ");
@@ -358,7 +432,7 @@ namespace QuizMaster.UI
             //Console.Write("Enter LastName Name: ");
             persontDTO.Role = (Role)Enum.Parse(typeof(Role), role);
 
-                
+
 
 
             return persontDTO;

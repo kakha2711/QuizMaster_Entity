@@ -117,6 +117,9 @@ namespace QuizMaster.Service.Services
          {
             var questionEntity = _mapper.Map<Question>(questionTest);
             await _questionRepository.AddQuestion(questionEntity);
+
+            _unitOfWork.SaveChanges();
+
             return await Task.FromResult("Question added successfully");
          }
 
@@ -178,6 +181,8 @@ namespace QuizMaster.Service.Services
             var answer = _mapper.Map<Answer>(answerTest);
 
             await _questionRepository.AddAnswer(answer);
+
+            _unitOfWork.SaveChanges();
 
             return await Task.FromResult("Answer added successfully");
         }

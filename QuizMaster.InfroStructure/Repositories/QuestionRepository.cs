@@ -81,7 +81,7 @@ namespace QuizMaster.InfroStructure.Repositories
 
         public async Task<string> AddQuestion(Question questionTest)
         {
-            var question = _quizMasterDb.Questions.Add(questionTest);
+            _quizMasterDb.Questions.Add(questionTest);
 
             return await Task.FromResult("Question added successfully.");
         }

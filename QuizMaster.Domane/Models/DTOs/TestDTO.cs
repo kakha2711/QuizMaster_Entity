@@ -3,6 +3,7 @@ namespace QuizMaster.Domane.Models.DTOs
 {
     public class TestDTO
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string? Topic { get; set; }
         public double QuestionsNumber { get; set; }
