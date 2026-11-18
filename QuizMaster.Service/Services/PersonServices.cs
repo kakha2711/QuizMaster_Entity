@@ -168,8 +168,12 @@ namespace QuizMaster.Service.Services
             {
 
                 var studentUpdate = await GetPersonByPersonalNumber<StudentDTO>(person.PersonalNumber);
+                //studentUpdate.Grade;
+                var studentDTO = (StudentDTO)(object)person;
 
-                studentUpdate.Grade = studentUpdate.Grade;
+                //studentUpdate.Grade = studentUpdate.Grade ?? studentDTO.Grade;
+
+                studentUpdate.Grade = (studentDTO.Grade != 0 || studentUpdate.Grade != studentDTO.Grade) ? studentDTO.Grade + studentUpdate.Grade : studentUpdate.Grade;
                 studentUpdate.FirsName = (person.FirsName != null || studentUpdate.FirsName != person.FirsName) ? person.FirsName : studentUpdate.FirsName;
                 studentUpdate.Lastname = (person.Lastname != null || studentUpdate.Lastname != person.Lastname) ? person.Lastname : studentUpdate.Lastname;
                 studentUpdate.Email = (person.Email != null || studentUpdate.Email != person.Email) ? person.Email : studentUpdate.Email;

@@ -329,6 +329,7 @@ namespace QuizMaster.UI
             string password = Console.ReadLine();
 
             StudentDTO studentDTO = personServices.LogIn<StudentDTO>(username, password).Result;
+            List<StudentDTO> students = personServices.GetAllPersonService<StudentDTO>().Result;
 
             if (studentDTO == null)
             {
@@ -338,13 +339,15 @@ namespace QuizMaster.UI
 
             var selected = AnsiConsole.Prompt(
                             new MultiSelectionPrompt<string>()
-            .Title("Which [green]features[/] do you want to enable?")
-                           .AddChoices(
+                            .Title("Which [green]features[/] do you want to enable?")
+                            .AddChoices(
                                         "Show Student",
                                         //"Add Student",
                                         "Uppdate Student",
                                         "Show Students Lider Boards",
-                                        "start Test"
+                                        "start Test",
+                                        "Show Lider Boards",
+                                        "Show Test Results"
                                         ));
 
             AnsiConsole.WriteLine("You selected:");
@@ -421,9 +424,9 @@ namespace QuizMaster.UI
                                                     .Take(5)
                                                     .ToList();
 
-                    double qula = selectedQuestion.MaximumScore/ selectedQuestion.QuestionsNumber;
+                    double qula = selectedQuestion.MaximumScore / selectedQuestion.QuestionsNumber;
 
-                    double sumScore = 1;
+                    double sumScore = 0;
 
                     int count = 0;
 
@@ -464,7 +467,7 @@ namespace QuizMaster.UI
                         {
                             sumScore += 2 * qula;
                         }
-                            count = 0;
+                        count = 0;
                     }
 
                     studentTestResultDTO.Score = sumScore;
@@ -473,11 +476,41 @@ namespace QuizMaster.UI
 
                     questionServices.AddTestResults(studentTestResultDTO);
 
-                   studentDTO.Grade = sumScore;
+                    studentDTO.Grade = sumScore;
 
                     personServices.UpdateStudent<StudentDTO>(studentDTO);//ეს არის შესამოწმებელი
 
                     break;
+
+                case "Show Lider Boards":
+
+
+                    var liderBoards = questionServices.GetTestResults().Result
+                                        .LeftJoin(personServices.GetAllPersonService<StudentDTO>().Result,
+                                        testResult => testResult.StudentId,
+                                        student => student.Id,
+                                        (testResult, student) => new { TestResult = testResult, Student = student });
+
+                    var liderBoardsOrderBy = liderBoards.GroupBy(x => x.TestResult.StudentId).Select(x => x.First()).ToList();
+
+                    //var liderBoardsOrderBy1 = liderBoards.GroupBy(x => x.TestResult.StudentId).Select(x => x.First() + " " + x.Sum(y => y.TestResult.Score)).ToList();
+
+                  
+
+                    foreach (var item in liderBoardsOrderBy)
+                    {
+                        Console.WriteLine($"Student: {item.Student.FirsName} {item.Student.Lastname}, Score: {item.TestResult.Score}");
+                    }
+
+                    //foreach (var item in liderBoardsOrderBy1)
+                    //{
+                    //    Console.WriteLine($"Student: {item} {item}, Score: {item}");
+
+                    //}
+
+
+                    break;
+
             }
         }
 
