@@ -485,31 +485,41 @@ namespace QuizMaster.UI
                 case "Show Lider Boards":
 
 
-                    var liderBoards = questionServices.GetTestResults().Result
-                                        .LeftJoin(personServices.GetAllPersonService<StudentDTO>().Result,
-                                        testResult => testResult.StudentId,
-                                        student => student.Id,
-                                        (testResult, student) => new { TestResult = testResult, Student = student });
+                    //var liderBoards = questionServices.GetTestResults().Result
+                    //                    .LeftJoin(personServices.GetAllPersonService<StudentDTO>().Result,
+                    //                    testResult => testResult.StudentId,
+                    //                    student => student.Id,
+                    //                    (testResult, student) => new { TestResult = testResult, Student = student });
 
-                    var liderBoardsOrderBy = liderBoards.GroupBy(x => x.TestResult.StudentId).Select(x => x.First()).ToList();
+                    //var liderBoardsOrderBy = liderBoards.GroupBy(x => x.TestResult.StudentId).Select(x => x.First()).ToList();
 
-                    //var liderBoardsOrderBy1 = liderBoards.GroupBy(x => x.TestResult.StudentId).Select(x => x.First() + " " + x.Sum(y => y.TestResult.Score)).ToList();
+                    //var liderBoards = questionServices.GetTestResults().Result
+                    //.Join(personServices.GetAllPersonService<StudentDTO>().Result,
+                    //testResult => testResult.StudentId,
+                    //student => student.Id,
+                    //(testResult, student) => new { TestResult = testResult, Student = student })
+                    //.GroupBy(x => x.TestResult.StudentId)
+                    //.Select(x => x.First())
+                    //.OrderByDescending(x => x.TestResult.Score)
+                    //.ToList();
 
-                  
 
-                    foreach (var item in liderBoardsOrderBy)
-                    {
-                        Console.WriteLine($"Student: {item.Student.FirsName} {item.Student.Lastname}, Score: {item.TestResult.Score}");
-                    }
-
-                    //foreach (var item in liderBoardsOrderBy1)
+                    //foreach (var item in liderBoardsOrderBy)
                     //{
-                    //    Console.WriteLine($"Student: {item} {item}, Score: {item}");
-
+                    //    Console.WriteLine($"Student: {item.Student.FirsName} {item.Student.Lastname}, Score: {item.TestResult.Score}");
                     //}
 
 
-                    break;
+                    Console.WriteLine("Lider Boards:");
+
+                    foreach (var item in students.OrderByDescending(s => s.Grade))
+                    {
+                        Console.WriteLine($"Student: {item.FirsName} {item.Lastname}, Score: {item.Grade}");
+                    }
+
+
+
+                        break;
 
             }
         }
